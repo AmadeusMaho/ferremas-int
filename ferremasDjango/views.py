@@ -4,3 +4,6 @@ from django.shortcuts import render
 
 def verIndex(request):
     return render(request, 'index.html', {})
+
+def verLogin(request):
+    return render(request, 'login.html', {})
