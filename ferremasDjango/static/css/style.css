@@ -1,0 +1,107 @@
+/* ferremas_app/static/ferremas_app/css/custom.css */
+.navbar {
+    background-color: #413b3b; /* Deep charcoal */
+}
+
+.navbar-brand, .nav-link {
+    color: #FFF5EE !important; /* Seashell cream */
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #FFCCD5 !important; /* Light pink on hover */
+}
+
+.search-input {
+    background-color: #5c5858; /* Darker gray for contrast */
+    border-radius: 25px;
+    padding: 8px 15px;
+    border: none;
+    display: flex;
+    align-items: center;
+}
+
+.search-input input {
+    border: none;
+    background: transparent;
+    color: #FFCCD5; /* Seashell cream text */
+    font-size: 0.9rem;
+    width: 100%;
+}
+
+.search-input input:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.search-input i {
+    color: #FFCCD5; /* Seashell cream icon */
+    margin-left: 10px;
+}
+
+.product-card {
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    background-color: #272424; /* Deep charcoal */
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+}
+
+.product-card img {
+    height: 200px;
+    object-fit: cover;
+}
+
+.product-card .card-title {
+    color: #FFE4E1; /* Misty rose text */
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.product-card .card-text {
+    color: #FFE4E1; /* Misty rose text */
+    font-size: 1rem;
+}
+
+.btn-cart {
+    background-color: #b17d85; /* Soft pink */
+    border: none;
+    color: #FFF5EE; /* Seashell cream */
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-cart:hover {
+    background-color: #FF99AC; /* Darker pink on hover */
+    box-shadow: 0 0 10px rgba(255, 182, 193, 0.5); /* Glow effect with pink */
+    transform: scale(1.05);
+}
+
+.btn-cart i {
+    font-size: 1rem;
+}
+
+.banner {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 2px solid #4A4A4A; /* Darker gray border */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+    margin-bottom: 2rem;
+}
+
+body {
+    background-color: #2A2A2A; /* Deep charcoal background */
+}
