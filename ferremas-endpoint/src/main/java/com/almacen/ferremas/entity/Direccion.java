@@ -10,7 +10,9 @@ import java.util.List;
 
 public class Direccion {
     @Id
-    private int direccion_id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "direccion_id")
+    private int direccionId;
     private String nombre;
     private String descripcion;
 
@@ -25,20 +27,20 @@ public class Direccion {
     public Direccion() {
     }
 
-    public Direccion(int direccion_id, String nombre, String descripcion, Cliente cliente, List<Despacho> despachos) {
-        this.direccion_id = direccion_id;
-        this.nombre = nombre;
-        this.descripcion = descripcion;
-        this.cliente = cliente;
+    public Direccion(List<Despacho> despachos, Cliente cliente, String descripcion, String nombre, int direccionId) {
         this.despachos = despachos;
+        this.cliente = cliente;
+        this.descripcion = descripcion;
+        this.nombre = nombre;
+        this.direccionId = direccionId;
     }
 
-    public int getDireccion_id() {
-        return direccion_id;
+    public int getDireccionId() {
+        return direccionId;
     }
 
-    public void setDireccion_id(int direccion_id) {
-        this.direccion_id = direccion_id;
+    public void setDireccionId(int direccionId) {
+        this.direccionId = direccionId;
     }
 
     public String getNombre() {

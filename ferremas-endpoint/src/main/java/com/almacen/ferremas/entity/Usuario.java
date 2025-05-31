@@ -1,53 +1,38 @@
 package com.almacen.ferremas.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name="usuario")
 
 public class Usuario {
     @Id
-    private int usuario_id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "usuario_id")
+    private int usuarioId;
     private String username;
     private String clave;
     private String email;
-    private int tipo_usuario;
+    @Column(name = "tipo_usuario")
+    private int tipoUsuario;
 
     public Usuario() {
     }
 
-    public Usuario(int usuario_id, String username, String clave, String email, int tipo_usuario) {
-        this.usuario_id = usuario_id;
+    public Usuario(int usuarioId, String username, String clave, String email, int tipoUsuario) {
+        this.usuarioId = usuarioId;
         this.username = username;
         this.clave = clave;
         this.email = email;
-        this.tipo_usuario = tipo_usuario;
+        this.tipoUsuario = tipoUsuario;
     }
 
-    public int getUsuario_id() {
-        return usuario_id;
+    public int getTipoUsuario() {
+        return tipoUsuario;
     }
 
-    public void setUsuario_id(int usuario_id) {
-        this.usuario_id = usuario_id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getClave() {
-        return clave;
-    }
-
-    public void setClave(String clave) {
-        this.clave = clave;
+    public void setTipoUsuario(int tipoUsuario) {
+        this.tipoUsuario = tipoUsuario;
     }
 
     public String getEmail() {
@@ -58,11 +43,27 @@ public class Usuario {
         this.email = email;
     }
 
-    public int getTipo_usuario() {
-        return tipo_usuario;
+    public String getClave() {
+        return clave;
     }
 
-    public void setTipo_usuario(int tipo_usuario) {
-        this.tipo_usuario = tipo_usuario;
+    public void setClave(String clave) {
+        this.clave = clave;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public int getUsuarioId() {
+        return usuarioId;
+    }
+
+    public void setUsuarioId(int usuarioId) {
+        this.usuarioId = usuarioId;
     }
 }

@@ -11,9 +11,12 @@ import java.util.List;
 
 public class Venta {
     @Id
-    private int venta_id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "venta_id")
+    private int ventaId;
     private Date fecha;
-    private String medio_pago;
+    @Column(name = "medio_pago")
+    private String medioPago;
 
     @ManyToOne
     @JoinColumn(name="cliente_id", nullable = false)
@@ -24,26 +27,26 @@ public class Venta {
     private List<Despacho> despachos;
 
     @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<DetalleVenta> detalles_ventas;
+    private List<DetalleVenta> detallesVentas;
 
     public Venta() {
     }
 
-    public Venta(int venta_id, Date fecha, String medio_pago, Cliente cliente, List<Despacho> despachos, List<DetalleVenta> detalles_ventas) {
-        this.venta_id = venta_id;
+    public Venta(int ventaId, Date fecha, String medioPago, Cliente cliente, List<Despacho> despachos, List<DetalleVenta> detallesVentas) {
+        this.ventaId = ventaId;
         this.fecha = fecha;
-        this.medio_pago = medio_pago;
+        this.medioPago = medioPago;
         this.cliente = cliente;
         this.despachos = despachos;
-        this.detalles_ventas = detalles_ventas;
+        this.detallesVentas = detallesVentas;
     }
 
-    public int getVenta_id() {
-        return venta_id;
+    public int getVentaId() {
+        return ventaId;
     }
 
-    public void setVenta_id(int venta_id) {
-        this.venta_id = venta_id;
+    public void setVentaId(int ventaId) {
+        this.ventaId = ventaId;
     }
 
     public Date getFecha() {
@@ -54,12 +57,12 @@ public class Venta {
         this.fecha = fecha;
     }
 
-    public String getMedio_pago() {
-        return medio_pago;
+    public String getMedioPago() {
+        return medioPago;
     }
 
-    public void setMedio_pago(String medio_pago) {
-        this.medio_pago = medio_pago;
+    public void setMedioPago(String medioPago) {
+        this.medioPago = medioPago;
     }
 
     public Cliente getCliente() {
@@ -78,12 +81,12 @@ public class Venta {
         this.despachos = despachos;
     }
 
-    public List<DetalleVenta> getDetalles_ventas() {
-        return detalles_ventas;
+    public List<DetalleVenta> getDetallesVentas() {
+        return detallesVentas;
     }
 
-    public void setDetalles_ventas(List<DetalleVenta> detalles_ventas) {
-        this.detalles_ventas = detalles_ventas;
+    public void setDetallesVentas(List<DetalleVenta> detallesVentas) {
+        this.detallesVentas = detallesVentas;
     }
 }
 

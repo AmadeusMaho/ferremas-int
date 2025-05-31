@@ -59,7 +59,7 @@ public class ProductoController {
     //Crear Producto
     @PostMapping
     public ResponseEntity<Producto> crearProducto(@RequestBody Producto Producto) {
-        if (!productoRepository.existsById(Producto.getProducto_id())) {
+        if (!productoRepository.existsById(Producto.getProductoId())) {
             Producto nuevoProducto = productoRepository.save(Producto);
             return ResponseEntity.ok(nuevoProducto);
         }

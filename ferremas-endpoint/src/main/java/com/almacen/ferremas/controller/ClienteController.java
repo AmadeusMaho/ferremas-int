@@ -1,6 +1,8 @@
 package com.almacen.ferremas.controller;
 
 import com.almacen.ferremas.entity.Cliente;
+import com.almacen.ferremas.entity.Direccion;
+import com.almacen.ferremas.entity.Venta;
 import com.almacen.ferremas.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,6 +36,34 @@ public class ClienteController {
                 ));
     }
 
+    //Recibir direcciones por ID del cliente
+    @GetMapping("/{id}/direcciones")
+    public List<Direccion> buscarDirecciones(@PathVariable Integer id){
+        Cliente cliente = buscarClientePorId(id);
+        List<Direccion> direccionesCliente = cliente.getDirecciones();
+        if (direccionesCliente.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "No se encontraron direcciones para el cliente con ID: " + id
+            );
+        }
+        return direccionesCliente;
+    }
+
+    //Recibir ventas por ID del cliente
+    @GetMapping("/{id}/ventas")
+    public List<Venta> buscarVentasCliente(@PathVariable Integer id){
+        Cliente cliente = buscarClientePorId(id);
+        List<Venta> ventasCliente = cliente.getVentas();
+        if (ventasCliente.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "No se encontraron ventas para el cliente con ID: " + id
+            );
+        }
+        return ventasCliente;
+    }
+
     //Actualizar cliente por ID
     @PutMapping("/{id}")
     public ResponseEntity<Cliente> actualizarCliente(@PathVariable Integer id, @RequestBody Cliente clienteActualizado) {
@@ -62,7 +92,7 @@ public class ClienteController {
     //Crear cliente
     @PostMapping
     public ResponseEntity<Cliente> crearCliente(@RequestBody Cliente cliente) {
-        if (!clienteRepository.existsById(cliente.getCliente_id())) {
+        if (!clienteRepository.existsById(cliente.getClienteId())) {
             Cliente nuevoCliente = clienteRepository.save(cliente);
             return ResponseEntity.ok(nuevoCliente);
         }

@@ -1,5 +1,6 @@
 package com.almacen.ferremas.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -9,7 +10,9 @@ import java.util.List;
 public class Cliente
 {
     @Id
-    private int cliente_id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "cliente_id")
+    private int clienteId;
     private String nombre;
     private String apellido;
     private int run;
@@ -26,8 +29,8 @@ public class Cliente
     public Cliente() {
     }
 
-    public Cliente(int cliente_id, String nombre, String apellido, int run, String dv, String email, String telefono, List<Venta> ventas, List<Direccion> direcciones) {
-        this.cliente_id = cliente_id;
+    public Cliente(int clienteId, String nombre, String apellido, int run, String dv, String email, String telefono, List<Venta> ventas, List<Direccion> direcciones) {
+        this.clienteId = clienteId;
         this.nombre = nombre;
         this.apellido = apellido;
         this.run = run;
@@ -38,12 +41,12 @@ public class Cliente
         this.direcciones = direcciones;
     }
 
-    public int getCliente_id() {
-        return cliente_id;
+    public int getClienteId() {
+        return clienteId;
     }
 
-    public void setCliente_id(int cliente_id) {
-        this.cliente_id = cliente_id;
+    public void setClienteId(int clienteId) {
+        this.clienteId = clienteId;
     }
 
     public String getNombre() {

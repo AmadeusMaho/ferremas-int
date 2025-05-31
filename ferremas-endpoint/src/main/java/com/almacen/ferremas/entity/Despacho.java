@@ -12,9 +12,13 @@ import java.util.Date;
 
 public class Despacho {
     @Id
-    private int despacho_id;
-    private Date fecha_despacho;
-    private Date fecha_recibido;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "despacho_id")
+    private int despachoId;
+    @Column(name = "fecha_despacho")
+    private Date fechaDespacho;
+    @Column(name = "fecha_recibido")
+    private Date fechaRecibido;
 
     @ManyToOne
     @JoinColumn(name="direccion_id", nullable = false)
@@ -29,36 +33,20 @@ public class Despacho {
     public Despacho() {
     }
 
-    public Despacho(int despacho_id, Date fecha_despacho, Date fecha_recibido, Direccion direccion, Venta venta) {
-        this.despacho_id = despacho_id;
-        this.fecha_despacho = fecha_despacho;
-        this.fecha_recibido = fecha_recibido;
+    public Despacho(int despachoId, Date fechaDespacho, Date fechaRecibido, Direccion direccion, Venta venta) {
+        this.despachoId = despachoId;
+        this.fechaDespacho = fechaDespacho;
+        this.fechaRecibido = fechaRecibido;
         this.direccion = direccion;
         this.venta = venta;
     }
 
-    public int getDespacho_id() {
-        return despacho_id;
+    public Venta getVenta() {
+        return venta;
     }
 
-    public void setDespacho_id(int despacho_id) {
-        this.despacho_id = despacho_id;
-    }
-
-    public Date getFecha_despacho() {
-        return fecha_despacho;
-    }
-
-    public void setFecha_despacho(Date fecha_despacho) {
-        this.fecha_despacho = fecha_despacho;
-    }
-
-    public Date getFecha_recibido() {
-        return fecha_recibido;
-    }
-
-    public void setFecha_recibido(Date fecha_recibido) {
-        this.fecha_recibido = fecha_recibido;
+    public void setVenta(Venta venta) {
+        this.venta = venta;
     }
 
     public Direccion getDireccion() {
@@ -69,11 +57,27 @@ public class Despacho {
         this.direccion = direccion;
     }
 
-    public Venta getVenta() {
-        return venta;
+    public Date getFechaRecibido() {
+        return fechaRecibido;
     }
 
-    public void setVenta(Venta venta) {
-        this.venta = venta;
+    public void setFechaRecibido(Date fechaRecibido) {
+        this.fechaRecibido = fechaRecibido;
+    }
+
+    public Date getFechaDespacho() {
+        return fechaDespacho;
+    }
+
+    public void setFechaDespacho(Date fechaDespacho) {
+        this.fechaDespacho = fechaDespacho;
+    }
+
+    public int getDespachoId() {
+        return despachoId;
+    }
+
+    public void setDespachoId(int despachoId) {
+        this.despachoId = despachoId;
     }
 }

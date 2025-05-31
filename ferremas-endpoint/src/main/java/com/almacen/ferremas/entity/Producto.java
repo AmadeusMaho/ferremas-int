@@ -9,7 +9,9 @@ import java.util.List;
 
 public class Producto {
     @Id
-    private int producto_id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "producto_id")
+    private int productoId;
     private String nombre;
     private String descripcion;
     private float precio;
@@ -22,8 +24,8 @@ public class Producto {
     public Producto() {
     }
 
-    public Producto(int producto_id, String nombre, String descripcion, float precio, String imagen, int stock, List<DetalleVenta> detalles_ventas) {
-        this.producto_id = producto_id;
+    public Producto(int productoId, String nombre, String descripcion, float precio, String imagen, int stock, List<DetalleVenta> detalles_ventas) {
+        this.productoId = productoId;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;
@@ -32,12 +34,12 @@ public class Producto {
         this.detalles_ventas = detalles_ventas;
     }
 
-    public int getProducto_id() {
-        return producto_id;
+    public int getProductoId() {
+        return productoId;
     }
 
-    public void setProducto_id(int producto_id) {
-        this.producto_id = producto_id;
+    public void setProductoId(int productoId) {
+        this.productoId = productoId;
     }
 
     public String getNombre() {

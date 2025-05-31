@@ -8,9 +8,12 @@ import jakarta.persistence.*;
 
 public class DetalleVenta {
     @Id
-    private int detalle_venta_id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "detalle_venta_id")
+    private int detalleVentaId;
     private int cantidad;
-    private double precio_unit;
+    @Column(name = "precio_unit")
+    private double precioUnit;
 
     @ManyToOne
     @JoinColumn(name="venta_id", nullable = false)
@@ -25,20 +28,20 @@ public class DetalleVenta {
     public DetalleVenta() {
     }
 
-    public DetalleVenta(int detalle_venta_id, int cantidad, double precio_unit, Venta venta, Producto producto) {
-        this.detalle_venta_id = detalle_venta_id;
+    public DetalleVenta(int detalleVentaId, int cantidad, double precioUnit, Venta venta, Producto producto) {
+        this.detalleVentaId = detalleVentaId;
         this.cantidad = cantidad;
-        this.precio_unit = precio_unit;
+        this.precioUnit = precioUnit;
         this.venta = venta;
         this.producto = producto;
     }
 
-    public int getDetalle_venta_id() {
-        return detalle_venta_id;
+    public int getDetalleVentaId() {
+        return detalleVentaId;
     }
 
-    public void setDetalle_venta_id(int detalle_venta_id) {
-        this.detalle_venta_id = detalle_venta_id;
+    public void setDetalleVentaId(int detalleVentaId) {
+        this.detalleVentaId = detalleVentaId;
     }
 
     public int getCantidad() {
@@ -49,12 +52,12 @@ public class DetalleVenta {
         this.cantidad = cantidad;
     }
 
-    public double getPrecio_unit() {
-        return precio_unit;
+    public double getPrecioUnit() {
+        return precioUnit;
     }
 
-    public void setPrecio_unit(double precio_unit) {
-        this.precio_unit = precio_unit;
+    public void setPrecioUnit(double precioUnit) {
+        this.precioUnit = precioUnit;
     }
 
     public Venta getVenta() {
