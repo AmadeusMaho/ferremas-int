@@ -9,6 +9,12 @@ def verIndex(request):
     print(contexto)
     return render(request, 'index.html', contexto)
 
+def verLogin(request):
+    return render(request, 'login.html', {})
+
+def verTemplate(request):
+    return render(request, 'template.html', {})
+
 def obtener_productos():
     url="http://localhost:8088/api/producto"
     try:
