@@ -24,4 +24,5 @@ urlpatterns = [
     path('',views.verIndex),
     path('index/', views.verIndex),
     path('login/', views.verLogin),
+    path('template/', views.verTemplate),
 ]
