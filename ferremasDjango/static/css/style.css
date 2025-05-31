@@ -20,6 +20,10 @@
     display: flex;
     align-items: center;
 }
+.search-input input::placeholder {
+    color: #FFD1DC; /* Light pink for placeholder */
+    opacity: 1;
+}
 
 .search-input input {
     border: none;
