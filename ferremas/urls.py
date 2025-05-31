@@ -21,6 +21,7 @@ from ferremasDjango import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('',views.verIndex),
     path('index/', views.verIndex),
-    path('login/', views.verLogin)
+    path('login/', views.verLogin),
 ]
