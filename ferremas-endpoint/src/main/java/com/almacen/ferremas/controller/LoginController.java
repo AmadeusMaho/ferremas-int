@@ -48,6 +48,9 @@ public class LoginController {
         response.put("token", token);
         response.put("username", user.getUsername());
         response.put("tipo_usuario", user.getTipoUsuario());
+        response.put("email", user.getEmail());
+        response.put("usuarioId", user.getUsuarioId());
+        response.put("clave", user.getClave());
 
         return ResponseEntity.ok(response);
     }

@@ -18,17 +18,18 @@ def verLogin(request):
         try:
             response = requests.post('http://localhost:8088/api/auth/login', json={
                 'username': username,
-                'clave': clave
+                'clave': clave,
             })
 
             if response.status_code == 200:
                 data = response.json()
                 
-                usuario=username
-                
                 request.session['jwt_token'] = data['token']
+                request.session['usuarioId'] = data['usuarioId']
+                request.session['usuario'] = data['username']
+                request.session['clave'] = data['clave']
+                request.session['email'] = data['email']
                 request.session['tipo_usuario'] = data['tipo_usuario']
-                request.session['usuario'] = username
                 return redirect('index')
             else:
                 error = "Credenciales invalidas"
@@ -84,6 +85,57 @@ def obtenerProducto_ID(request, id):
     except Exception as e:
         print(e)
         return None
-    
+
+def verUsuario(request):
+    usuarioId = request.session.get('usuarioId', '') 
+    usuario = request.session.get('usuario', '')
+    clave = request.session.get('clave', '')
+    tipo_usuario = request.session.get('tipo_usuario', '')
+    email = request.session.get('email', '')
+    contexto = {
+        "usuario": usuario,
+        "tipo_usuario": tipo_usuario,
+        "email": email,
+        "usuarioId": usuarioId,
+        "clave": clave
+    }
+    return render(request, 'usuario.html', contexto)
+
+def actualizarUsuario(request):
+    if request.method == 'POST' and request.POST.get('_method') == 'PUT':
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        clave = request.POST.get('clave')
+        usuarioId = request.POST.get('usuarioId')
+        tipo_usuario = request.session.get('tipo_usuario', '')
+        datos_actualizados = {
+            'username': username,
+            'clave': clave,
+            'email': email,
+            'tipo_usuario': tipo_usuario
+        }
+        try:
+            response = requests.put(f'http://localhost:8088/api/usuario/{usuarioId}', json=datos_actualizados)
+
+            if response.status_code == 200:
+                request.session['usuario'] = username
+                request.session['clave'] = clave
+                request.session['email'] = email
+                return redirect('usuario')
+            else:
+                error = f"No se pudo actualizar el usuario: {response.text}"
+        except Exception as e:
+            error = str(e)
+        
+        return render(request, 'usuario.html', {
+            'error': error,
+            'username': username,
+            'email': email,
+            'tipo_usuario': tipo_usuario,
+            'usuarioId': usuarioId,
+        })
+    return redirect('usuario')
+
+
     
     
