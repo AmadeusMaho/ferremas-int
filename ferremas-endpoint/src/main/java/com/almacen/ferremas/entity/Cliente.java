@@ -1,0 +1,112 @@
+package com.almacen.ferremas.entity;
+
+import jakarta.persistence.*;
+
+import java.util.List;
+
+@Entity
+@Table (name="cliente")
+public class Cliente
+{
+    @Id
+    private int cliente_id;
+    private String nombre;
+    private String apellido;
+    private int run;
+    private String dv;
+    private String email;
+    private String telefono;
+
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Venta> ventas;
+
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Direccion> direcciones;
+
+    public Cliente() {
+    }
+
+    public Cliente(int cliente_id, String nombre, String apellido, int run, String dv, String email, String telefono, List<Venta> ventas, List<Direccion> direcciones) {
+        this.cliente_id = cliente_id;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.run = run;
+        this.dv = dv;
+        this.email = email;
+        this.telefono = telefono;
+        this.ventas = ventas;
+        this.direcciones = direcciones;
+    }
+
+    public int getCliente_id() {
+        return cliente_id;
+    }
+
+    public void setCliente_id(int cliente_id) {
+        this.cliente_id = cliente_id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getApellido() {
+        return apellido;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+
+    public int getRun() {
+        return run;
+    }
+
+    public void setRun(int run) {
+        this.run = run;
+    }
+
+    public String getDv() {
+        return dv;
+    }
+
+    public void setDv(String dv) {
+        this.dv = dv;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public List<Venta> getVentas() {
+        return ventas;
+    }
+
+    public void setVentas(List<Venta> ventas) {
+        this.ventas = ventas;
+    }
+
+    public List<Direccion> getDirecciones() {
+        return direcciones;
+    }
+
+    public void setDirecciones(List<Direccion> direcciones) {
+        this.direcciones = direcciones;
+    }
+}
