@@ -6,6 +6,12 @@
   <title>Document</title>
 </head>
 <body>
-  <h1>hola</h1>
+  <h1>productos:</h1>
+{% for productos in datos %}
+
+<h1> {{productos.nombre}} </h1>
+<img src="{{productos.imagen}}" alt="">
+{% endfor %}
+
 </body>
 </html>

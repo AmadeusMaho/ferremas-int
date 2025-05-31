@@ -28,8 +28,8 @@ public class Producto {
         this.productoId = productoId;
         this.nombre = nombre;
         this.descripcion = descripcion;
-        this.precio = precio;
         this.imagen = imagen;
+        this.precio = precio;
         this.stock = stock;
         this.detalles_ventas = detalles_ventas;
     }
