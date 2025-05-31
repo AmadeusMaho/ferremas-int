@@ -21,12 +21,9 @@ from ferremasDjango import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',views.verIndex),
-    path('index/', views.verIndex),
-<<<<<<< HEAD
-    path('producto/<str:id>/', views.obtenerProducto_ID, name='producto')
-=======
+    path('', views.verIndex),
+    path('index/', views.verIndex, name="index"),
+    path('producto/<str:id>/', views.obtenerProducto_ID, name='producto'),
     path('login/', views.verLogin),
     path('template/', views.verTemplate),
->>>>>>> 07ea31bb9c4c4671f50624e976b48d4b810a772f
 ]
