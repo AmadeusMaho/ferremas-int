@@ -22,7 +22,7 @@ from ferremasDjango import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.verIndex),
-    path('index/', views.verIndex),
+    path('index/', views.verIndex, name="index"),
     path('login/', views.verLogin),
     path('template/', views.verTemplate),
 ]
