@@ -23,4 +23,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.verIndex),
     path('index/', views.verIndex),
+    path('producto/<str:id>/', views.obtenerProducto_ID, name='producto')
 ]

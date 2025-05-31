@@ -18,4 +18,15 @@ def obtener_productos():
     except Exception as e:
         return None
     
+def obtenerProducto_ID(request, id):
+    url="http://localhost:8088/api/producto/"+id
+    try:
+        response = requests.get(url)
+        data = response.json()
+        return render(request, 'producto.html', {'producto': data})
+    except Exception as e:
+        print(e)
+        return None
+    
+    
     
