@@ -325,17 +325,16 @@ def verVentas(request):
 
 def verDetalleId(request, id):
     urlDetalle = f"http://localhost:8088/api/venta/{id}/detalle"
-
     try:
         responseDetalle = requests.get(urlDetalle)
         responseDetalle.raise_for_status()
-        detalle = responseDetalle.json()  # <-- JSON es una lista
-
+        detalles = responseDetalle.json()
     except Exception as e:
         print(f"Error: {e}")
-        return render(request, 'listadetalle.html', {'detalle': [], 'error': str(e)})
+        return render(request, 'listadetalle.html', {'detalles': [], 'error': str(e)})
 
-    return render(request, 'listadetalle.html', {'detalle': detalle})
+    return render(request, 'listadetalle.html', {'detalles': detalles})
+
 
 
 

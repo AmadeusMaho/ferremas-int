@@ -148,7 +148,6 @@ body {
   color: white;
 }
 
-<<<<<<< HEAD
 /* Dark mode table */
 .table {
   background-color: #2a2a2a !important;        /* Dark background */
@@ -204,7 +203,6 @@ body {
     padding: 10px;
   }
 }
-=======
 .search-input {
       max-width: 200px; /* Limit search bar width */
 }
@@ -219,4 +217,3 @@ body {
       padding: 0 10px;
       color: #FFCCD5; /* Match your color scheme */
 }
->>>>>>> 046ee467f38f3f841435ea3b4c64d0a1847eb31c
