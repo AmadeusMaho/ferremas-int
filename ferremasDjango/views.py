@@ -254,6 +254,16 @@ def logout(request):
     return redirect('login')
 
 
+#devuelve el producto como json
+def getProductoporID(producto_id):
+    url = f"http://localhost:8088/api/producto/{producto_id}"
+    try:
+        response = requests.get(url)
+        response.raise_for_status() 
+        return response.json()
+    except Exception as e:
+        print(f"Error: {e}")
+        return None
 
 
 def realizar_pago(request):
@@ -261,13 +271,14 @@ def realizar_pago(request):
         tx = Transaction(WebpayOptions(IntegrationCommerceCodes.WEBPAY_PLUS, IntegrationApiKeys.WEBPAY, IntegrationType.TEST))
         # recibir precio final del producto del HTML
         if request.method == "POST":
-            productoId = request.POST.get("producto_id")
+            productoId = request.POST.get("productoId")
             precio = request.POST.get("amount")
-
+        #recibe el producto desde el json con .get
+        producto = getProductoporID(productoId)
         #genera la orden de compra
         buy_order = f"ORD{random.randint(100000, 999999)}"
         session_id = "SES123"
-        amount = int(precio) 
+        amount = int(precio)
         return_url = "http://localhost:8000/pago/retorno/"
 
         #se crea la transacción y recibe la respuesta de la API
@@ -326,3 +337,29 @@ def verDetalleId(request, id):
 
     return render(request, 'listadetalle.html', {'detalle': detalle})
 
+
+
+def buscarProducto(request):
+    busqueda = request.GET.get('q', '').strip().lower()
+    #tipo_usuario = request.session.get('tipo_usuario')
+    productos = obtener_productos()
+    if busqueda:
+        #p itera sobre productos si existe la búsqueda, luego "in" implica que mientras haya un mínimo de coincidencia se añada al array
+        productos = [p for p in productos if busqueda in p.get('nombre', '').lower()]
+    contexto = {
+        'datos': productos,
+        'query': busqueda 
+    }
+    return render(request, 'listaProductos.html', contexto)
+
+def verProductosLista(request):
+    productos = obtener_productos()
+    tipo_usuario = request.session.get('tipo_usuario')
+    try:
+        tipo_usuario_int = int(tipo_usuario)
+    except (TypeError, ValueError):
+        tipo_usuario_int = -1
+    contexto = { "datos":productos,
+                 "tipo_usuario": tipo_usuario_int}
+    print(contexto)
+    return render(request, 'listaProductos.html', contexto)
