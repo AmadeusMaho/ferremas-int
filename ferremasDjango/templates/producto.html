@@ -44,6 +44,25 @@ Producto - Ferremas
   </div>
 
   <script>
+
+function calcularAmount(){
+  let input = document.getElementById('quantity');
+      let precioUnitario = parseFloat(document.getElementById('precio_unitario').textContent);
+      let precioTotalElement = document.getElementById('precio_total');
+      let amountInput = document.getElementById('amount');
+
+      let cantidad = parseInt(input.value);
+      let newTotal = precioUnitario * cantidad;
+      precioTotalElement.textContent = newTotal.toFixed(2);
+      
+      // Si precio_total es igual a precio_unitario (cantidad = 1), usar precio_unitario
+      if (cantidad === 1) {
+        amountInput.value = precioUnitario.toFixed(0);
+      } else {
+        amountInput.value = newTotal.toFixed(0);
+      }
+}
+
  function aumentarCantidad() {
       let input = document.getElementById('quantity');
       let precioUnitario = parseFloat(document.getElementById('precio_unitario').textContent);
