@@ -54,4 +54,9 @@ public class LoginController {
 
         return ResponseEntity.ok(response);
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout() {
+        return ResponseEntity.ok("Logged out. Please delete your token on client.");
+    }
 }
