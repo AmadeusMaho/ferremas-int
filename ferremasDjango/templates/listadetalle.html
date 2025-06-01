@@ -1,0 +1,38 @@
+{% extends "template.html" %}
+{% load static %}
+{% block titulo %}Ferremas - Ventas{% endblock %}
+{% block content %}
+<div class="container mt-5 pt-5">
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Detalles de la venta</h5>
+      {% if detalle %}
+        <div class="table-responsive table-dark">
+          <table class="table table-bordered table-striped mt-3">
+            <thead>
+              <tr>
+                <th>ID Detalle</th>
+                <th>ID Producto</th>
+                <th>Cantidad</th>
+                <th>Precio Unitario</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for d in detalle %}
+              <tr>
+                <td>{{ d.detalleVentaId }}</td>
+                <td>{{ d.productoId }}</td>
+                <td>{{ d.cantidad }}</td>
+                <td>${{ d.precioUnit|floatformat:2 }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <p>Esta venta no tiene un detalle</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

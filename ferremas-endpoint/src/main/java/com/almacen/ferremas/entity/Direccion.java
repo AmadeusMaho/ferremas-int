@@ -1,6 +1,8 @@
 package com.almacen.ferremas.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -17,10 +19,12 @@ public class Direccion {
     private String descripcion;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name="cliente_id", nullable = false)
-    @JsonIgnoreProperties("cliente")
+    //@JsonIgnoreProperties("cliente")
     private Cliente cliente;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "direccion", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Despacho> despachos;
 

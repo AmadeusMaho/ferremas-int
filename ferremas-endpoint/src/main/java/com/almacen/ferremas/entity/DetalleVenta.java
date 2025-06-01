@@ -1,5 +1,6 @@
 package com.almacen.ferremas.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
@@ -16,13 +17,15 @@ public class DetalleVenta {
     private double precioUnit;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name="venta_id", nullable = false)
-    @JsonIgnoreProperties("venta")
+    //@JsonIgnoreProperties("venta")
     private Venta venta;
 
     @ManyToOne
+    //@JsonBackReference
     @JoinColumn(name="producto_id", nullable = false)
-    @JsonIgnoreProperties("producto")
+    @JsonIgnoreProperties({"detalles_ventas"})
     private Producto producto;
 
     public DetalleVenta() {

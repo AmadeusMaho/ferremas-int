@@ -19,6 +19,7 @@ public class VentaController {
     //Recibir ventas por ID
     @GetMapping
     public List<Venta> listarVentas() {return ventaRepository.findAll();}
+
     @GetMapping("/{id}")
     public Venta buscarVentaPorId(@PathVariable Integer id) {
         return ventaRepository.findById(id)

@@ -1,0 +1,48 @@
+{% extends "template.html" %}
+{% load static %}
+{% block titulo %}Ferremas - Ventas{% endblock %}
+{% block content %}
+<div class="container mt-5 pt-5">
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Ventas de la tienda</h5>
+      {% if ventas %}
+        <div class="table-responsive table-dark">
+          <table class="table table-bordered table-striped mt-3">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Fecha</th>
+                <th>ID Cliente</th>
+                <th>Nombre Cliente</th>
+                <th>Medio de Pago</th>
+                <th>Total</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for venta in ventas %}
+              <tr>
+                <td>{{ venta.ventaId }}</td>
+                <td>{{ venta.fecha }}</td>
+                <td>{{ venta.clienteId|default:"-" }}</td>
+                <td>{{ venta.nombreCliente|default:"-" }}</td>
+                <td>{{ venta.medioPago|default:"-" }}</td>
+                <td>${{ venta.total|floatformat:2 }}</td>
+                <td>
+                  <a href="{% url 'listadetalles' venta.ventaId %}" class="btn btn-sm btn-primary">
+                    Detalle
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <p>No hay ventas registradas.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
