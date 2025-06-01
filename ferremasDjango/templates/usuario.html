@@ -1,6 +1,6 @@
 {% extends "template.html" %}
 {% load static %}
-{% block titulo %}Ferremas - Login{% endblock %}
+{% block titulo %}Ferremas - Perfil{% endblock %}
 {% block content %}
 <div class="container mt-5 pt-5">
   <div class="card">
@@ -33,6 +33,47 @@
 
   <div class="card mt-4">
     <div class="card-body">
+      <h5 class="card-title">Mis direcciones</h5>
+
+      <form method="post" action="{% url 'direcciones' %}">
+        {% csrf_token %}
+
+        {% for direccion in direcciones %}
+          <div class="form-group mt-2 mb-2 d-flex align-items-center">
+            <input
+              type="text"
+              class="form-control me-2"
+              name="direccion_{{ direccion.direccionId }}"
+              value="{{ direccion.descripcion }}"
+            >
+            <button 
+              type="submit" 
+              name="eliminar" 
+              value="{{ direccion.direccionId }}" 
+              class="btn btn-danger btn-sm"
+              onclick="return confirm('¿Seguro que deseas eliminar esta dirección?');"
+            >
+              Eliminar
+            </button>
+          </div>
+        {% endfor %}
+
+        <div class="form-group mt-3">
+          <input
+            type="text"
+            class="form-control"
+            name="nueva_direccion"
+            placeholder="Nueva dirección"
+          >
+        </div>
+
+        <button type="submit" name="guardar" class="btn btn-primary mt-3">Guardar cambios</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="card mt-4">
+    <div class="card-body">
       <h5 class="card-title">Cerrar sesión</h5>
       <form method="post" action="{% url 'logout' %}">
         {% csrf_token %}
@@ -41,5 +82,4 @@
     </div>
   </div>
 </div>
-
 {% endblock %}
