@@ -1,29 +1,27 @@
 package com.almacen.ferremas.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name="detalle_venta")
-
 public class DetalleVenta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "detalle_venta_id")
     private int detalleVentaId;
+
     private int cantidad;
+
     @Column(name = "precio_unit")
     private double precioUnit;
 
     @ManyToOne
-    @JsonBackReference
     @JoinColumn(name="venta_id", nullable = false)
-    //@JsonIgnoreProperties("venta")
+    @JsonIgnoreProperties({"detallesVentas", "despachos", "cliente"})
     private Venta venta;
 
     @ManyToOne
-    //@JsonBackReference
     @JoinColumn(name="producto_id", nullable = false)
     @JsonIgnoreProperties({"detalles_ventas"})
     private Producto producto;

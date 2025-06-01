@@ -59,10 +59,9 @@ public class VentaController {
 
     @PostMapping
     public ResponseEntity<Venta> registrarVenta(@RequestBody Venta venta) {
-        if (!ventaRepository.existsById(venta.getVentaId())) {
-            Venta ventaGuardada = ventaRepository.save(venta);
-            return ResponseEntity.ok(ventaGuardada);
-        }
-        return null;
+        System.out.println("Recibida venta: " + venta);
+        venta.getDetallesVentas().forEach(detalle -> detalle.setVenta(venta));
+        Venta ventaGuardada = ventaRepository.save(venta);
+        return ResponseEntity.ok(ventaGuardada);
     }
 }

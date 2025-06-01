@@ -1,36 +1,32 @@
 package com.almacen.ferremas.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import java.util.Date;
 
 @Entity
-@Table(name="despacho")
-
+@Table(name = "despacho")
 public class Despacho {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "despacho_id")
     private int despachoId;
+
     @Column(name = "fecha_despacho")
     private Date fechaDespacho;
+
     @Column(name = "fecha_recibido")
     private Date fechaRecibido;
 
     @ManyToOne
-    @JsonBackReference
-    @JoinColumn(name="direccion_id", nullable = false)
-    //@JsonIgnoreProperties("direccion")
+    @JoinColumn(name = "direccion_id", nullable = false)
+    @JsonIgnoreProperties({"despachos", "cliente"})
     private Direccion direccion;
 
     @ManyToOne
-    @JsonBackReference
-    @JoinColumn(name="venta_id", nullable = false)
-    //@JsonIgnoreProperties("venta")
+    @JoinColumn(name = "venta_id", nullable = false)
+    @JsonIgnoreProperties({"detallesVentas", "despachos", "cliente"})
     private Venta venta;
 
     public Despacho() {
@@ -44,28 +40,12 @@ public class Despacho {
         this.venta = venta;
     }
 
-    public Venta getVenta() {
-        return venta;
+    public int getDespachoId() {
+        return despachoId;
     }
 
-    public void setVenta(Venta venta) {
-        this.venta = venta;
-    }
-
-    public Direccion getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(Direccion direccion) {
-        this.direccion = direccion;
-    }
-
-    public Date getFechaRecibido() {
-        return fechaRecibido;
-    }
-
-    public void setFechaRecibido(Date fechaRecibido) {
-        this.fechaRecibido = fechaRecibido;
+    public void setDespachoId(int despachoId) {
+        this.despachoId = despachoId;
     }
 
     public Date getFechaDespacho() {
@@ -76,11 +56,27 @@ public class Despacho {
         this.fechaDespacho = fechaDespacho;
     }
 
-    public int getDespachoId() {
-        return despachoId;
+    public Date getFechaRecibido() {
+        return fechaRecibido;
     }
 
-    public void setDespachoId(int despachoId) {
-        this.despachoId = despachoId;
+    public void setFechaRecibido(Date fechaRecibido) {
+        this.fechaRecibido = fechaRecibido;
+    }
+
+    public Direccion getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(Direccion direccion) {
+        this.direccion = direccion;
+    }
+
+    public Venta getVenta() {
+        return venta;
+    }
+
+    public void setVenta(Venta venta) {
+        this.venta = venta;
     }
 }

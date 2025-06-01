@@ -1,19 +1,18 @@
 package com.almacen.ferremas.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-
 import java.util.List;
 
 @Entity
-@Table (name="cliente")
-public class Cliente
-{
+@Table(name = "cliente")
+public class Cliente {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cliente_id")
-    private Integer  clienteId;
+    private Integer clienteId;
+
     private String nombre;
     private String apellido;
     private int run;
@@ -21,33 +20,24 @@ public class Cliente
     private String email;
     private String telefono;
 
+    @JsonIgnore // Ignoramos ventas para evitar recursión y no incluirlas en el JSON
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Venta> ventas;
 
-    @JsonManagedReference
+    // No ignoramos direcciones para que se muestren en JSON
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Direccion> direcciones;
 
     public Cliente() {
     }
 
-    public Cliente(Integer  clienteId, String nombre, String apellido, int run, String dv, String email, String telefono, List<Venta> ventas, List<Direccion> direcciones) {
-        this.clienteId = clienteId;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.run = run;
-        this.dv = dv;
-        this.email = email;
-        this.telefono = telefono;
-        this.ventas = ventas;
-        this.direcciones = direcciones;
-    }
+    // Getters y setters
 
-    public Integer  getClienteId() {
+    public Integer getClienteId() {
         return clienteId;
     }
 
-    public void setClienteId(Integer  clienteId) {
+    public void setClienteId(Integer clienteId) {
         this.clienteId = clienteId;
     }
 

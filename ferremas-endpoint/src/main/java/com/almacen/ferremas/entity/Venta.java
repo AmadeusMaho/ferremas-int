@@ -1,17 +1,12 @@
 package com.almacen.ferremas.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-
 import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table(name="venta")
-
 public class Venta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,20 +18,17 @@ public class Venta {
 
     @ManyToOne
     @JoinColumn(name="cliente_id", nullable = false)
-    //@JsonIgnoreProperties("cliente")
     @JsonIgnoreProperties({"ventas", "direcciones"})
     private Cliente cliente;
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Despacho> despachos;
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DetalleVenta> detallesVentas;
 
     public Venta() {
-    }
+        }
 
     public Venta(int ventaId, Date fecha, String medioPago, Cliente cliente, List<Despacho> despachos, List<DetalleVenta> detallesVentas) {
         this.ventaId = ventaId;

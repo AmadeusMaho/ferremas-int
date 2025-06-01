@@ -1,27 +1,25 @@
 package com.almacen.ferremas.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-
 import java.util.List;
 
 @Entity
-@Table (name="producto")
-
+@Table(name="producto")
 public class Producto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "producto_id")
     private int productoId;
+
     private String nombre;
     private String descripcion;
     private float precio;
     private String imagen;
     private int stock;
 
-
-
     @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("producto")
     private List<DetalleVenta> detalles_ventas;
 
     public Producto() {
@@ -31,8 +29,8 @@ public class Producto {
         this.productoId = productoId;
         this.nombre = nombre;
         this.descripcion = descripcion;
-        this.imagen = imagen;
         this.precio = precio;
+        this.imagen = imagen;
         this.stock = stock;
         this.detalles_ventas = detalles_ventas;
     }

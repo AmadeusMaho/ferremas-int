@@ -1,31 +1,28 @@
 package com.almacen.ferremas.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-
 import java.util.List;
 
 @Entity
-@Table(name="direccion")
-
+@Table(name = "direccion")
 public class Direccion {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "direccion_id")
     private int direccionId;
+
     private String nombre;
     private String descripcion;
 
     @ManyToOne
-    @JsonBackReference
-    @JoinColumn(name="cliente_id", nullable = false)
-    //@JsonIgnoreProperties("cliente")
+    @JoinColumn(name = "cliente_id", nullable = false)
+    @JsonIgnoreProperties({"ventas", "direcciones"}) // Ignoramos ventas y direcciones para no recursión excesiva
     private Cliente cliente;
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "direccion", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("direccion") // Para evitar recursión desde despachos
     private List<Despacho> despachos;
 
     public Direccion() {
@@ -38,6 +35,8 @@ public class Direccion {
         this.nombre = nombre;
         this.direccionId = direccionId;
     }
+
+    // Getters y setters
 
     public int getDireccionId() {
         return direccionId;
