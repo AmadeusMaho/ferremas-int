@@ -81,3 +81,7 @@ CREATE TABLE despacho (
 INSERT INTO cliente values (1, "mauri", "gatica", 12345678, "5", "ajns@jdfg.com", "+65892115");
 INSERT INTO producto values (2, "dddd", "alfileres básicos", "https://www.intextil.com.co/wp-content/uploads/2023/05/Alfileres-de-cabeza-redonda-cristal-perla.jpeg", 95452, 15);
 INSERT INTO usuario values (1, "mauri", "123", "ajns@jdfg.com", 1);
+INSERT INTO usuario values (2, "bodeguero", "123", "ajns@jdfg.com", 3);
+INSERT INTO usuario values (3, "contador", "123", "ajns@jdfg.com", 4);
+INSERT INTO cliente VALUES (2, 'juan', 'perez', 87654321, 'K', 'juan@example.com', '+123456789');
+INSERT INTO producto values (3, "moto", "moto básica", "https://www.istockphoto.com/es/fotos/moto-roja", 1555252, 23);
