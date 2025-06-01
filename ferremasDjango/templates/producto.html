@@ -55,7 +55,7 @@ function calcularAmount(){
       let newTotal = precioUnitario * cantidad;
       precioTotalElement.textContent = newTotal.toFixed(2);
       
-      // Si precio_total es igual a precio_unitario (cantidad = 1), usar precio_unitario
+      // si precio_total es igual a precio_unitario (cantidad = 1), usar precio_unitario
       if (cantidad === 1) {
         amountInput.value = precioUnitario.toFixed(0);
       } else {
