@@ -109,3 +109,41 @@
 body {
     background-color: #2A2A2A; /* Deep charcoal background */
 }
+
+.card {
+  background-color: #222222;
+  color: white;
+}
+
+.card label {
+  color: #ccc; /* gris claro para los labels */
+}
+
+.card .form-control {
+  background-color: #3a3a3a; /* gris oscuro para inputs */
+  color: white;
+  border: 1px solid #555;
+}
+
+.card .form-control::placeholder {
+  color: #999; /* gris para placeholders */
+}
+
+.card .form-control:focus {
+  background-color: #4a4a4a;
+  border-color: #b17d85;
+  color: white;
+  box-shadow: 0 0 5px #b17d85;
+}
+
+.card .btn-primary {
+  background-color: #b17d85;
+  border-color: #b17d85;
+  color: white;
+}
+
+.card .btn-primary:hover {
+  background-color: #a56f79;
+  border-color: #a56f79;
+  color: white;
+}

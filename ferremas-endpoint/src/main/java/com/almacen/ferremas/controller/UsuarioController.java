@@ -43,13 +43,18 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<Usuario> crearUsuario(@RequestBody Usuario usuario) {
-        if (!usuarioRepository.existsById(usuario.getUsuarioId())) {
+    public ResponseEntity<?> crearUsuario(@RequestBody Usuario usuario) {
+        try {
+            usuario.setUsuarioId(null); // ensure new entity
             Usuario usuarioGuardado = usuarioRepository.save(usuario);
-            return ResponseEntity.ok(usuarioGuardado);
+            return ResponseEntity.status(HttpStatus.CREATED).body(usuarioGuardado);
+        } catch (Exception e) {
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
-        return null;
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Map<String, String>> eliminarUsuario(@PathVariable Integer id) {

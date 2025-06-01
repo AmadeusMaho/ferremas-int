@@ -92,11 +92,9 @@ public class ClienteController {
     //Crear cliente
     @PostMapping
     public ResponseEntity<Cliente> crearCliente(@RequestBody Cliente cliente) {
-        if (!clienteRepository.existsById(cliente.getClienteId())) {
-            Cliente nuevoCliente = clienteRepository.save(cliente);
-            return ResponseEntity.ok(nuevoCliente);
-        }
-        return null;
+        cliente.setClienteId(null);
+        Cliente nuevoCliente = clienteRepository.save(cliente);
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevoCliente);
     }
 
     //eliminar cliente

@@ -9,17 +9,17 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "usuario_id")
-    private int usuarioId;
+    private Integer usuarioId;
     private String username;
     private String clave;
     private String email;
     @Column(name = "tipo_usuario")
-    private int tipoUsuario;
+    private Integer tipoUsuario;
 
     public Usuario() {
     }
 
-    public Usuario(int usuarioId, String username, String clave, String email, int tipoUsuario) {
+    public Usuario(Integer usuarioId, String username, String clave, String email, Integer tipoUsuario) {
         this.usuarioId = usuarioId;
         this.username = username;
         this.clave = clave;
@@ -27,11 +27,11 @@ public class Usuario {
         this.tipoUsuario = tipoUsuario;
     }
 
-    public int getTipoUsuario() {
+    public Integer getTipoUsuario() {
         return tipoUsuario;
     }
 
-    public void setTipoUsuario(int tipoUsuario) {
+    public void setTipoUsuario(Integer tipoUsuario) {
         this.tipoUsuario = tipoUsuario;
     }
 
@@ -59,11 +59,11 @@ public class Usuario {
         this.username = username;
     }
 
-    public int getUsuarioId() {
+    public Integer getUsuarioId() {
         return usuarioId;
     }
 
-    public void setUsuarioId(int usuarioId) {
+    public void setUsuarioId(Integer usuarioId) {
         this.usuarioId = usuarioId;
     }
 }

@@ -1,0 +1,58 @@
+{% extends "template.html" %}
+{% load static %}
+{% block titulo %}Ferremas - Registro clientes{% endblock %}
+{% block content %}
+    <div class="container mt-5 pt-5">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Registro clientes </h5>
+          </div>
+            <form method="post">
+              {% csrf_token %}
+              <div class="form-group  mx-3 mb-2">
+                <label for="nombre">Nombre</label>
+                <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre" value="{{ form_data.nombre|default_if_none:'' }}">
+              </div>
+              <div class="form-group  mx-3 mb-2">
+                <label for="apellido">Apellido</label>
+                <input type="text" class="form-control" id="apellido" name="apellido" placeholder="Apellido" value="{{ form_data.apellido|default_if_none:'' }}">
+              </div>
+              <div class="form-group  mx-3 mb-2">
+                <label for="run">RUN</label>
+                <input type="text" class="form-control" id="run" name="run" placeholder="RUN"value="{{ form_data.run|default_if_none:'' }}">
+              </div>
+              <div class="form-group  mx-3 mb-2">
+                <label for="dv">Digito Verificador</label>
+                <input type="text" class="form-control" id="dv" name="dv" placeholder="Digito Verificador"value="{{ form_data.dv|default_if_none:'' }}">
+              </div>
+              <div class="form-group  mx-3 mb-2">
+              <input type="hidden" name="usuarioId" value="{{ usuarioId }}">
+                <label for="exampleInputEmail1">Usuario</label>
+                <input type="username" class="form-control" id="username" name="username" placeholder="Usuario"value="{{ form_data.username|default_if_none:'' }}">
+              </div>
+              <div class="form-group  mx-3 mt-2 mb-2">
+                <label for="exampleInputPassword1">Contraseña</label>
+                <input type="password" class="form-control"  name="clave" id="clave" placeholder="Contraseña"value="{{ form_data.clave|default_if_none:'' }}">
+              </div>
+              <div class="form-group mx-3 mt-2 mb-2">
+                <label for="confirmar_clave">Confirmar Contraseña</label>
+                <input type="password" class="form-control" name="confirmar_clave" id="confirmar_clave" placeholder="Confirmar Contraseña" value="{{ form_data.confirmar_clave|default_if_none:'' }}">
+              </div>
+              <div class="form-group  mx-3 mt-2 mb-2">
+                <label for="exampleInputMail">Email</label>
+                <input type="email" class="form-control"  name="email" id="email" placeholder="Mail"value="{{ form_data.email|default_if_none:'' }}">
+              </div>
+              <div class="form-group  mx-3 mb-2">
+                <label for="telefono">Teléfono</label>
+                <input type="text" class="form-control" id="telefono" name="telefono" placeholder="Teléfono"value="{{ form_data.telefono|default_if_none:'' }}">
+              </div>
+              <input type="hidden" name="_method" value="PUT">
+              <button type="submit" class="btn btn-primary mx-3 mt-2 mb-2">Registrarse</button>
+               {% if error %}
+                <p style="color:red;">{{ error }}</p>
+               {% endif %}
+            </form>
+          </div>
+        </div>
+      
+{% endblock %}
