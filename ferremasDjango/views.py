@@ -89,10 +89,11 @@ def get_data(request):
 def obtenerProducto_ID(request, id):
     #carga el producto a partir de la ID
     url="http://localhost:8088/api/producto/"+id
+    tipo_usuario = request.session.get('tipo_usuario')
     try:
         response = requests.get(url)
         data = response.json()
-        return render(request, 'producto.html', {'producto': data})
+        return render(request, 'producto.html', {'producto': data, 'tipo_usuario':tipo_usuario})
     except Exception as e:
         print(e)
         return None
@@ -294,51 +295,56 @@ def retorno_pago(request):
         #guardamos el token generado anteriormente
         token=request.GET.get('token_ws')
         #buscamos el producto por ID (guardado en session storage)
-        productoId = request.session.get('productoId')
+        productoId = int(request.session.get('productoId'))
         cantidad = 1
         producto = getProductoporID(productoId)
-        
         # configura las credenciales nuevamente
         tx = Transaction(WebpayOptions(IntegrationCommerceCodes.WEBPAY_PLUS, IntegrationApiKeys.WEBPAY, IntegrationType.TEST))
         # confirma la transacción y recibe los resultados del token
         response = tx.commit(token)
         if response.get('response_code') == 0 and response.get('status') == 'AUTHORIZED':
-            
+            print("pasa a response.getauthorized")
+            fechaTransaccion = response.get('transaction_date')
+            print(fechaTransaccion)
+            if len(fechaTransaccion) >= 8:
+                    fecha_formateada = f"{fechaTransaccion[:4]}-{fechaTransaccion[5:7]}-{fechaTransaccion[8:10]}"
+            print(fecha_formateada)
              #si la respuesta es correcta se genera una venta en la bdd
             venta = {
-                'fecha': response.get('transaction_date'),
-                        "cliente": {
-            "clienteId": int(request.session.get('usuarioId', ''))
-                },
-            'medio_pago': response.get('payment_type_code'),
-            "detallesVentas": [],
-            "despachos": []
+                'fecha': fecha_formateada,
+                'medioPago': response.get('payment_type_code', 'TBK'),
+                'cliente': {'clienteId': 1 },
+                'detallesVentas': [
+                    {
+                        'producto': {'productoId': productoId},
+                        'cantidad': cantidad,
+                        'precioUnit': producto.get('precio')
+                    }
+                ],
+                'despachos': []
             }
             print(venta)
-
-            
-            #detalle_venta = {
-            #'fecha': response.get('transaction_date') ,
-            #'medio_pago' : response.get('payment_type_code'),
-            #'producto_id': productoId,
-            #'cantidad' : cantidad,
-            #'precio_unit' : producto.get('precio')
-        #}
             responsePost = requests.post('http://localhost:8088/api/venta', json=venta)
-            try:
-                if responsePost.status_code in (200, 201):
-                    print("venta realizada")
-                else:
-                    print("error en el post")
-            except Exception as e:
-                print(e)
+            if responsePost.status_code in (200, 201):
+                print("Venta realizada exitosamente")
+                return render(request, 'retorno.html', {
+                    'response': response,
+                    'venta': responsePost.json()
+                })
+            else:
+                print(f"Error en el POST: {responsePost.text}")
+                return render(request, 'retorno.html', {
+                    'error': f'Error al registrar la venta: {responsePost.text}',
+                    'response': response
+                })
+    
         return render(request, 'retorno.html', {'response': response})
     except Exception as e:
         return render(request, 'retorno.html', {'error': str(e)})
     
 def verVentas(request):
     urlVenta = "http://localhost:8088/api/venta"
-
+    tipo_usuario = request.session.get('tipo_usuario')
     try:
         responseVentas = requests.get(urlVenta)
         responseVentas.raise_for_status()
@@ -358,11 +364,13 @@ def verVentas(request):
         print(f"Error: {e}")
         return render(request, 'listaventas.html', {'ventas': [], 'error': str(e)})
 
-    return render(request, 'listaventas.html', {'ventas': ventas})
+    return render(request, 'listaventas.html', {'ventas': ventas, 'tipo_usuario':tipo_usuario})
+
+
 
 def verDetalleId(request, id):
     urlDetalle = f"http://localhost:8088/api/venta/{id}/detalle"
-
+    tipo_usuario = request.session.get('tipo_usuario')
     try:
         responseDetalle = requests.get(urlDetalle)
         responseDetalle.raise_for_status()
@@ -370,22 +378,36 @@ def verDetalleId(request, id):
 
     except Exception as e:
         print(f"Error: {e}")
-        return render(request, 'listadetalle.html', {'detalle': [], 'error': str(e)})
+        return render(request, 'listadetalle.html', {'detalle': [], 'error': str(e),'tipo_usuario':tipo_usuario})
 
-    return render(request, 'listadetalle.html', {'detalle': detalle})
+    return render(request, 'listadetalle.html', {'detalle': detalle, 'tipo_usuario':tipo_usuario})
 
 
+def verUsuarios(request):
+    urlDetalle = f"http://localhost:8088/api/cliente"
+    tipo_usuario = request.session.get('tipo_usuario')
+    try:
+        responseDetalle = requests.get(urlDetalle)
+        responseDetalle.raise_for_status()
+        usuarios = responseDetalle.json()  # <-- JSON es una lista
+        print(usuarios)
+    except Exception as e:
+        print(f"Error: {e}")
+        return render(request, 'listaUsuarios.html', {'usuarios': [], 'error': str(e),'tipo_usuario':tipo_usuario})
+
+    return render(request, 'listaUsuarios.html', {'usuarios': usuarios, 'tipo_usuario':tipo_usuario})
 
 def buscarProducto(request):
     busqueda = request.GET.get('q', '').strip().lower()
-    #tipo_usuario = request.session.get('tipo_usuario')
+    tipo_usuario = request.session.get('tipo_usuario')
     productos = obtener_productos()
     if busqueda:
         #p itera sobre productos si existe la búsqueda, luego "in" implica que mientras haya un mínimo de coincidencia se añada al array
         productos = [p for p in productos if busqueda in p.get('nombre', '').lower()]
     contexto = {
         'datos': productos,
-        'query': busqueda 
+        'query': busqueda,
+        'tipo_usuario': tipo_usuario
     }
     return render(request, 'listaProductos.html', contexto)
 
@@ -400,3 +422,13 @@ def verProductosLista(request):
                  "tipo_usuario": tipo_usuario_int}
     print(contexto)
     return render(request, 'listaProductos.html', contexto)
+
+
+
+            #detalle_venta = {
+            #'fecha': response.get('transaction_date') ,
+            #'medio_pago' : response.get('payment_type_code'),
+            #'producto_id': productoId,
+            #'cantidad' : cantidad,
+            #'precio_unit' : producto.get('precio')
+        #}
