@@ -1,6 +1,8 @@
 asgiref==3.8.1
 certifi==2024.7.4
 charset-normalizer==3.3.2
+certifi==2024.7.4
+charset-normalizer==3.3.2
 Django==5.1.9
 idna==3.7
 marshmallow==3.17.0
