@@ -272,8 +272,10 @@ def realizar_pago(request):
         if request.method == "POST":
             productoId = request.POST.get("productoId")
             precio = request.POST.get("amount")
+            cantidad = request.POST.get("quantity")
         #recibe el producto desde el json con .get
-        producto = getProductoporID(productoId)
+        request.session['productoId'] = productoId
+        request.session['cantidad'] = cantidad
         #genera la orden de compra
         buy_order = f"ORD{random.randint(100000, 999999)}"
         session_id = "SES123"
@@ -290,10 +292,47 @@ def retorno_pago(request):
     try:
         #guardamos el token generado anteriormente
         token=request.GET.get('token_ws')
+        #buscamos el producto por ID (guardado en session storage)
+        productoId = request.session.get('productoId')
+        cantidad = 1
+        producto = getProductoporID(productoId)
+        
         # configura las credenciales nuevamente
         tx = Transaction(WebpayOptions(IntegrationCommerceCodes.WEBPAY_PLUS, IntegrationApiKeys.WEBPAY, IntegrationType.TEST))
         # confirma la transacción y recibe los resultados del token
         response = tx.commit(token)
+        if response.get('response_code') == 0 and response.get('status') == 'AUTHORIZED':
+            
+             #si la respuesta es correcta se genera una venta en la bdd
+            venta = {
+                'fecha': response.get('transaction_date'),
+                'cliente_id': int(request.session.get('usuarioId', '')),
+                'medio_pago': response.get('payment_type_code'),
+                "detallesVentas": [
+        {
+            "producto": {"productoId": productoId}, 
+            "cantidad": cantidad,  
+            "precioUnitario": producto.get('precio')  
+        }
+    ],
+            "despachos": []
+            }
+            print(venta)
+            #detalle_venta = {
+            #'fecha': response.get('transaction_date') ,
+            #'medio_pago' : response.get('payment_type_code'),
+            #'producto_id': productoId,
+            #'cantidad' : cantidad,
+            #'precio_unit' : producto.get('precio')
+        #}
+            responsePost = requests.post('http://localhost:8088/api/venta', json=venta)
+            try:
+                if responsePost.status_code in (200, 201):
+                    print("venta realizada")
+                else:
+                    print("error en el post")
+            except Exception as e:
+                print(e)
         return render(request, 'retorno.html', {'response': response})
     except Exception as e:
         return render(request, 'retorno.html', {'error': str(e)})
