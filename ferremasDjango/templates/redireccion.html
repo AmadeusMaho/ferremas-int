@@ -6,6 +6,8 @@ Redirigiendo a Webpay - Ferremas
 {% endblock %}
 
 {% block content %}
+
+{%if request.session.usuarioId%}
 <div class="container mt-5 pt-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
@@ -24,11 +26,27 @@ Redirigiendo a Webpay - Ferremas
         </div>
     </div>
 </div>
-
 <script>
-    // Enviar el formulario automáticamente después de 2 segundos
+    // delay de 2 segundos con barra de carga
     setTimeout(function() {
         document.getElementById('webpay_form').submit();
     }, 2000);
 </script>
+{%else%}
+
+<div class="container mt-5 pt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card product-card text-center">
+                <div class="card-body">
+                    <h3 class="card-title" style="color: #FFE4E1;">Necesitas iniciar sesión para hacer una compra.</h3>
+                    <p class="card-text" style="color: #FFE4E1;">Inicia sesión o registrate.</p>
+                    <a href="{% url 'login' %}" id="login-btn"class="btn login-btn mt-3">Iniciar Sesión</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{%endif%}
 {% endblock %}

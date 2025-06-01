@@ -284,14 +284,17 @@ def getProductoporID(producto_id):
 def realizar_pago(request):
         #configurar credenciales de transbank
         tx = Transaction(WebpayOptions(IntegrationCommerceCodes.WEBPAY_PLUS, IntegrationApiKeys.WEBPAY, IntegrationType.TEST))
+        tipo_usuario = request.session.get('tipo_usuario')
+        
         # recibir precio final del producto del HTML
         if request.method == "POST":
             productoId = request.POST.get("productoId")
             precio = request.POST.get("amount")
-            cantidad = request.POST.get("quantity")
+            cantidad = request.POST.get('quantity', '1')
         #recibe el producto desde el json con .get
         request.session['productoId'] = productoId
         request.session['cantidad'] = cantidad
+        print(cantidad)
         #genera la orden de compra
         buy_order = f"ORD{random.randint(100000, 999999)}"
         session_id = "SES123"
@@ -302,15 +305,16 @@ def realizar_pago(request):
         response = tx.create(buy_order, session_id, amount, return_url)
         print(response)
         return render(request, 'redireccion.html', {'url': response['url'],
-        'token': response['token']})
+        'token': response['token'],'tipo_usuario':tipo_usuario})
 
 def retorno_pago(request):
     try:
+        tipo_usuario = request.session.get('tipo_usuario')
         #guardamos el token generado anteriormente
         token=request.GET.get('token_ws')
         #buscamos el producto por ID (guardado en session storage)
         productoId = int(request.session.get('productoId'))
-        cantidad = 1
+        cantidad = int(request.session['cantidad'])
         producto = getProductoporID(productoId)
         # configura las credenciales nuevamente
         tx = Transaction(WebpayOptions(IntegrationCommerceCodes.WEBPAY_PLUS, IntegrationApiKeys.WEBPAY, IntegrationType.TEST))
@@ -319,7 +323,6 @@ def retorno_pago(request):
         if response.get('response_code') == 0 and response.get('status') == 'AUTHORIZED':
             print("pasa a response.getauthorized")
             fechaTransaccion = response.get('transaction_date')
-            print(fechaTransaccion)
             if len(fechaTransaccion) >= 8:
                     fecha_formateada = f"{fechaTransaccion[:4]}-{fechaTransaccion[5:7]}-{fechaTransaccion[8:10]}"
             print(fecha_formateada)
@@ -347,18 +350,20 @@ def retorno_pago(request):
                 print("Venta realizada exitosamente")
                 return render(request, 'retorno.html', {
                     'response': response,
-                    'venta': responsePost.json()
+                    'venta': responsePost.json(),
+                    'tipo_usuario': tipo_usuario
                 })
             else:
                 print(f"Error en el POST: {responsePost.text}")
                 return render(request, 'retorno.html', {
                     'error': f'Error al registrar la venta: {responsePost.text}',
-                    'response': response
+                    'response': response,
+                    'tipo_usuario': tipo_usuario
                 })
     
-        return render(request, 'retorno.html', {'response': response})
+        return render(request, 'retorno.html', {'response': response, 'tipo_usuario': tipo_usuario})
     except Exception as e:
-        return render(request, 'retorno.html', {'error': str(e)})
+        return render(request, 'retorno.html', {'error': str(e), 'tipo_usuario': tipo_usuario} )
     
 def verVentas(request):
     urlVenta = "http://localhost:8088/api/venta"
@@ -392,12 +397,12 @@ def verDetalleId(request, id):
     try:
         responseDetalle = requests.get(urlDetalle)
         responseDetalle.raise_for_status()
-        detalles = responseDetalle.json()
+        detalle = responseDetalle.json()
     except Exception as e:
         print(f"Error: {e}")
         return render(request, 'listadetalle.html', {'detalle': [], 'error': str(e),'tipo_usuario':tipo_usuario})
 
-    return render(request, 'listadetalle.html', {'detalle': detalle, 'tipo_usuario':tipo_usuario})
+    return render(request, 'listadetalle.html', {'detalles': detalle, 'tipo_usuario':tipo_usuario})
 
 
 def verUsuarios(request):
