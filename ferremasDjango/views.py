@@ -104,14 +104,28 @@ def verUsuario(request):
     clave = request.session.get('clave', '')
     tipo_usuario = request.session.get('tipo_usuario', '')
     email = request.session.get('email', '')
+
+    direcciones = []
+
+    if usuarioId:
+        try:
+            response = requests.get(f"http://localhost:8088/api/cliente/{usuarioId}/direcciones")
+            if response.status_code == 200:
+                direcciones = response.json()
+        except Exception as e:
+            print(f"Error al obtener direcciones para el usuario {usuarioId}: {e}")
+
     contexto = {
         "usuario": usuario,
         "tipo_usuario": tipo_usuario,
         "email": email,
         "usuarioId": usuarioId,
-        "clave": clave
+        "clave": clave,
+        "direcciones": direcciones,
     }
+
     return render(request, 'usuario.html', contexto)
+
 
 def actualizarUsuario(request):
     if request.method == 'POST' and request.POST.get('_method') == 'PUT':
@@ -440,3 +454,70 @@ def verProductosLista(request):
             #'cantidad' : cantidad,
             #'precio_unit' : producto.get('precio')
         #}
+
+def direcciones(request):
+    usuario_id = request.session.get('usuarioId', '')
+    if not usuario_id:
+        return redirect('login')
+
+    if request.method == 'POST':
+        if 'eliminar' in request.POST:
+            direccion_id = request.POST['eliminar']
+            try:
+                response = requests.delete(f"http://localhost:8088/api/direccion/{direccion_id}")
+                if response.status_code != 200:
+                    print(f"Error eliminando dirección {direccion_id}: {response.text}")
+            except Exception as e:
+                print(f"Error eliminando dirección {direccion_id}: {e}")
+            return redirect('usuario')
+
+        elif 'guardar' in request.POST:
+            # Aquí va tu código para actualizar y agregar direcciones (como antes)
+            for key in request.POST:
+                if key.startswith('direccion_') and key != 'nueva_direccion':
+                    direccion_id = int(key.split('_')[1])
+                    nueva_descripcion = request.POST.get(key).strip()
+                    if nueva_descripcion != '':
+                        try:
+                            response = requests.put(
+                                f"http://localhost:8088/api/direccion/{direccion_id}",
+                                json={
+                                    "nombre": "",
+                                    "descripcion": nueva_descripcion,
+                                    "cliente": {"clienteId": int(usuario_id)}
+                                }
+                            )
+                            if response.status_code != 200:
+                                print(f"Error actualizando dirección {direccion_id}: {response.text}")
+                        except Exception as e:
+                            print(f"Error actualizando dirección {direccion_id}: {e}")
+
+            nueva_direccion = request.POST.get('nueva_direccion', '').strip()
+            if nueva_direccion != '':
+                try:
+                    response = requests.post(
+                        "http://localhost:8088/api/direccion",
+                        json={
+                            "nombre": "",
+                            "descripcion": nueva_direccion,
+                            "cliente": {"clienteId": int(usuario_id)}
+                        }
+                    )
+                    if response.status_code != 200:
+                        print(f"Error agregando nueva dirección: {response.text}")
+                except Exception as e:
+                    print(f"Error agregando nueva dirección: {e}")
+
+            return redirect('usuario')
+
+    return redirect('usuario')
+
+def eliminar_direccion(request, direccion_id):
+    if request.method == 'POST':
+        try:
+            response = requests.delete(f"http://localhost:8088/api/direccion/{direccion_id}")
+            if response.status_code != 200:
+                print(f"Error eliminando dirección: código {response.status_code}")
+        except Exception as e:
+            print(f"Error eliminando dirección {direccion_id}: {e}")
+    return redirect('usuario')
