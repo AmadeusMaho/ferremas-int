@@ -11,7 +11,13 @@ import random
 
 def verIndex(request):
     productos = obtener_productos()
-    contexto = { "datos":productos}
+    tipo_usuario = request.session.get('tipo_usuario')
+    try:
+        tipo_usuario_int = int(tipo_usuario)
+    except (TypeError, ValueError):
+        tipo_usuario_int = -1
+    contexto = { "datos":productos,
+                 "tipo_usuario": tipo_usuario_int}
     print(contexto)
     return render(request, 'index.html', contexto)
 
