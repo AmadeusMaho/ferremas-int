@@ -253,20 +253,30 @@ def logout(request):
     return redirect('login')
 
 
-
+#devuelve el producto como json
+def getProductoporID(producto_id):
+    url = f"http://localhost:8088/api/producto/{producto_id}"
+    try:
+        response = requests.get(url)
+        response.raise_for_status() 
+        return response.json()
+    except Exception as e:
+        print(f"Error: {e}")
+        return None
 
 def realizar_pago(request):
         #configurar credenciales de transbank
         tx = Transaction(WebpayOptions(IntegrationCommerceCodes.WEBPAY_PLUS, IntegrationApiKeys.WEBPAY, IntegrationType.TEST))
         # recibir precio final del producto del HTML
         if request.method == "POST":
-            productoId = request.POST.get("producto_id")
+            productoId = request.POST.get("productoId")
             precio = request.POST.get("amount")
-
+        #recibe el producto desde el json con .get
+        producto = getProductoporID(productoId)
         #genera la orden de compra
         buy_order = f"ORD{random.randint(100000, 999999)}"
         session_id = "SES123"
-        amount = int(precio) 
+        amount = int(precio)
         return_url = "http://localhost:8000/pago/retorno/"
 
         #se crea la transacción y recibe la respuesta de la API

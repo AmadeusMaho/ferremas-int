@@ -15,8 +15,8 @@ Producto - Ferremas
           <div class="card-body">
             
             <h5 class="card-title">{{ producto.nombre }}</h5>
-            <p class="card-text">Precio unitario: $<span id="precio_unitario">{{ producto.precio|floatformat:2 }}</span></p>
-            <p class="card-text">Precio total: $<span id="precio_total">{{ producto.precio|floatformat:2 }}</span></p>
+            <p class="card-text">Precio unitario: $<span name="precio_unitario" id="precio_unitario">{{ producto.precio|floatformat:2 }}</span></p>
+            <p class="card-text">Precio total: $<span name="precio_total" id="precio_total" value="">{{ producto.precio|floatformat:2 }}</span></p>
             <p class="card-text">{{ producto.descripcion|default:"Descripción no disponible." }}</p>
             <div class="d-flex align-items-center mb-3">
               <label for="quantity" class="me-2" style="color: #FFE4E1;">Cantidad:</label>
@@ -29,8 +29,8 @@ Producto - Ferremas
             <form method="POST" action="{% url 'realizar_pago' %}">
             {% csrf_token %}
             <input type="hidden" name="token_ws" value="{{ token }}">
-            <input type="hidden" id="amount" name="amount" value="precio_total">
-            <input type="hidden" id="productoId" name="productoId" value="producto.productoId">
+            <input type="hidden" id="amount" name="amount" value="{{producto.precio|floatformat:0 }}">
+            <input type="hidden" id="productoId" name="productoId" value="{{producto.productoId}}">
             <div class="text-center">
                 <button type="submit" class="btn btn-cart"><i class="fas fa-cart-plus"></i> Comprar</button>
             </div>
@@ -45,23 +45,6 @@ Producto - Ferremas
 
   <script>
 
-function calcularAmount(){
-  let input = document.getElementById('quantity');
-      let precioUnitario = parseFloat(document.getElementById('precio_unitario').textContent);
-      let precioTotalElement = document.getElementById('precio_total');
-      let amountInput = document.getElementById('amount');
-
-      let cantidad = parseInt(input.value);
-      let newTotal = precioUnitario * cantidad;
-      precioTotalElement.textContent = newTotal.toFixed(2);
-      
-      // si precio_total es igual a precio_unitario (cantidad = 1), usar precio_unitario
-      if (cantidad === 1) {
-        amountInput.value = precioUnitario.toFixed(0);
-      } else {
-        amountInput.value = newTotal.toFixed(0);
-      }
-}
 
  function aumentarCantidad() {
       let input = document.getElementById('quantity');
