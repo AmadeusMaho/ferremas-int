@@ -307,18 +307,16 @@ def retorno_pago(request):
              #si la respuesta es correcta se genera una venta en la bdd
             venta = {
                 'fecha': response.get('transaction_date'),
-                'cliente_id': int(request.session.get('usuarioId', '')),
-                'medio_pago': response.get('payment_type_code'),
-                "detallesVentas": [
-        {
-            "producto": {"productoId": productoId}, 
-            "cantidad": cantidad,  
-            "precioUnitario": producto.get('precio')  
-        }
-    ],
+                        "cliente": {
+            "clienteId": int(request.session.get('usuarioId', ''))
+                },
+            'medio_pago': response.get('payment_type_code'),
+            "detallesVentas": [],
             "despachos": []
             }
             print(venta)
+
+            
             #detalle_venta = {
             #'fecha': response.get('transaction_date') ,
             #'medio_pago' : response.get('payment_type_code'),
