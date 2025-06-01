@@ -136,25 +136,92 @@ def actualizarUsuario(request):
         })
     return redirect('usuario')
 
+import re
+import requests
+from django.shortcuts import render, redirect
+
 def verRegistro(request):
     if request.method == 'POST':
+        nombre = request.POST.get('nombre', '').strip()
+        apellido = request.POST.get('apellido', '').strip()
+        run = request.POST.get('run', '').strip()
+        dv = request.POST.get('dv', '').strip().upper()
+        username = request.POST.get('username', '').strip()
+        email = request.POST.get('email', '').strip()
+        telefono = request.POST.get('telefono', '').strip()
+        clave = request.POST.get('clave', '')
+        confirmar_clave = request.POST.get('confirmar_clave', '')
+
+        error = None
+
+        if not nombre:
+            error = "El campo Nombre es obligatorio."
+        elif not apellido:
+            error = "El campo Apellido es obligatorio."
+        elif not run:
+            error = "El campo RUN es obligatorio."
+        elif not dv:
+            error = "El campo Dígito Verificador es obligatorio."
+        elif not username:
+            error = "El campo Usuario es obligatorio."
+        elif not email:
+            error = "El campo Email es obligatorio."
+        elif not telefono:
+            error = "El campo Teléfono es obligatorio."
+        elif not clave:
+            error = "El campo Contraseña es obligatorio."
+        elif not confirmar_clave:
+            error = "Debe confirmar la contraseña."
+        
+        elif not re.fullmatch(r'[A-Za-z]{1,100}', nombre):
+            error = "Nombre debe tener solo letras (máx 100 caracteres)."
+        elif not re.fullmatch(r'[A-Za-z]{1,100}', apellido):
+            error = "Apellido debe tener solo letras (máx 100 caracteres)."
+        elif not re.fullmatch(r'\d{8}', run):
+            error = "RUN debe tener exactamente 8 números."
+        elif not re.fullmatch(r'[0-9Kk]', dv):
+            error = "Dígito verificador debe ser un número o 'K'."
+        elif len(username) > 50:
+            error = "Usuario debe tener hasta 50 caracteres."
+        elif len(email) > 100 or not re.fullmatch(r'[^@]+@[^@]+\.[^@]+', email):
+            error = "Email inválido o demasiado largo (máx 100 caracteres)."
+        elif not re.fullmatch(r'\+56\d{7,10}', telefono):
+            error = "Teléfono debe comenzar con +56 y tener hasta 10 números."
+        elif len(clave) < 8 or len(clave) > 50:
+            error = "Contraseña debe tener entre 8 y 50 caracteres."
+        elif clave != confirmar_clave:
+            error = "Las contraseñas no coinciden."
+
+        if error:
+            form_data = {
+                'nombre': nombre,
+                'apellido': apellido,
+                'run': run,
+                'dv': dv,
+                'username': username,
+                'email': email,
+                'telefono': telefono,
+            }
+            return render(request, 'registro.html', {'error': error, 'form_data': form_data})
+
         datos_registro = {
-            'nombre': request.POST.get('nombre'),
-            'apellido': request.POST.get('apellido'),
-            'run': request.POST.get('run'),
-            'dv': request.POST.get('dv'),
-            'username': request.POST.get('username'),
-            'email': request.POST.get('email'),
-            'telefono': request.POST.get('telefono'),
+            'nombre': nombre,
+            'apellido': apellido,
+            'run': run,
+            'dv': dv,
+            'username': username,
+            'email': email,
+            'telefono': telefono,
         }
+
         try:
             response = requests.post('http://localhost:8088/api/cliente', json=datos_registro)
             if response.status_code in (200, 201):
                 datos_usuario = {
-                    'username': request.POST.get('username'),
-                    'clave': request.POST.get('clave'),
-                    'email': request.POST.get('email'),
-                    'tipoUsuario': 2 # cliente = 2
+                    'username': username,
+                    'clave': clave,
+                    'email': email,
+                    'tipoUsuario': 2  # cliente = 2
                 }
                 response_usuario = requests.post('http://localhost:8088/api/usuario', json=datos_usuario)
                 if response_usuario.status_code in (200, 201):
@@ -167,7 +234,12 @@ def verRegistro(request):
             error = str(e)
 
         return render(request, 'registro.html', {'error': error})
+
     return render(request, 'registro.html')
+
+def logout(request):
+    request.session.flush()
+    return redirect('login')
 
 
 

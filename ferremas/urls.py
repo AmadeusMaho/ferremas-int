@@ -29,4 +29,5 @@ urlpatterns = [
     path('usuario/', views.verUsuario, name="usuario"),
     path('update/', views.actualizarUsuario, name='actualizarUsuario'),
     path('registro/', views.verRegistro, name='registroUsuario'),
+    path('logout/', views.logout, name='logout'),
 ]
