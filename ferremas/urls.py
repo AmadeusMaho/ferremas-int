@@ -21,6 +21,13 @@ from ferremasDjango import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('',views.verIndex),
+    path('login/', views.verLogin),
+    path('template/', views.verTemplate),
+ 
+    #transbank
+    path('pago/iniciar/', views.realizar_pago, name='realizar_pago'),
+    path('pago/retorno/', views.retorno_pago, name='retorno_pago'),
     path('', views.verIndex),
     path('index/', views.verIndex, name="index"),
     path('producto/<str:id>/', views.obtenerProducto_ID, name='producto'),

@@ -68,8 +68,18 @@
 			<version>0.11.5</version>
 			<scope>runtime</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.github.transbankdevelopers</groupId>
+			<artifactId>transbank-sdk-java</artifactId>
+			<version>6.0.0</version>
+		</dependency>
 	</dependencies>
-
+	<repositories>
+		<repository>
+			<id>transbank</id>
+			<url>https://repo.transbank.cl/artifactory/public/</url>
+		</repository>
+	</repositories>
 	<build>
 		<plugins>
 			<plugin>

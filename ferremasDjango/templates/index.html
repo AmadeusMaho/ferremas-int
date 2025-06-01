@@ -9,11 +9,11 @@
             {% for producto in datos %}
                 <div class="col-md-4 mb-4">
                     <div class="card product-card">
-                        <img src="{{ producto.imagen.url }}" class="card-img-top" alt="{{ producto.nombre }}">
+                       <a href="{% url 'producto' producto.productoId %}"><img src="{{ producto.imagen }}" class="card-img-top" alt="{{ producto.nombre }}"></a> 
                         <div class="card-body text-center">
                             <h5 class="card-title">{{ producto.nombre }}</h5>
                             <p class="card-text">${{ producto.precio|floatformat:2 }}</p>
-                            <a href="#" class="btn btn-cart"><i class="fa fa-cart-plus"></i> Añadir al Carrito</a>
+                            <a href="{% url 'producto' producto.productoId %}" class="btn btn-cart"><i class="fa fa-cart-plus"></i>Ver producto</a>
                         </div>
                     </div>
                 </div>
