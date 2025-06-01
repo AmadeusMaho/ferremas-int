@@ -24,8 +24,9 @@ urlpatterns = [
     path('', views.verIndex),
     path('index/', views.verIndex, name="index"),
     path('producto/<str:id>/', views.obtenerProducto_ID, name='producto'),
-    path('login/', views.verLogin),
+    path('login/', views.verLogin, name='login'),
     path('template/', views.verTemplate),
     path('usuario/', views.verUsuario, name="usuario"),
     path('update/', views.actualizarUsuario, name='actualizarUsuario'),
+    path('registro/', views.verRegistro, name='registroUsuario'),
 ]

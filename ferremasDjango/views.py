@@ -136,6 +136,40 @@ def actualizarUsuario(request):
         })
     return redirect('usuario')
 
+def verRegistro(request):
+    if request.method == 'POST':
+        datos_registro = {
+            'nombre': request.POST.get('nombre'),
+            'apellido': request.POST.get('apellido'),
+            'run': request.POST.get('run'),
+            'dv': request.POST.get('dv'),
+            'username': request.POST.get('username'),
+            'email': request.POST.get('email'),
+            'telefono': request.POST.get('telefono'),
+        }
+        try:
+            response = requests.post('http://localhost:8088/api/cliente', json=datos_registro)
+            if response.status_code in (200, 201):
+                datos_usuario = {
+                    'username': request.POST.get('username'),
+                    'clave': request.POST.get('clave'),
+                    'email': request.POST.get('email'),
+                    'tipoUsuario': 2 # cliente = 2
+                }
+                response_usuario = requests.post('http://localhost:8088/api/usuario', json=datos_usuario)
+                if response_usuario.status_code in (200, 201):
+                    return redirect('login')
+                else:
+                    error = f"No se pudo registrar el usuario: {response_usuario.text}"
+            else:
+                error = f"No se pudo registrar el cliente: {response.text}"
+        except Exception as e:
+            error = str(e)
+
+        return render(request, 'registro.html', {'error': error})
+    return render(request, 'registro.html')
+
+
 
     
     
