@@ -264,6 +264,7 @@ def getProductoporID(producto_id):
         print(f"Error: {e}")
         return None
 
+
 def realizar_pago(request):
         #configurar credenciales de transbank
         tx = Transaction(WebpayOptions(IntegrationCommerceCodes.WEBPAY_PLUS, IntegrationApiKeys.WEBPAY, IntegrationType.TEST))
@@ -296,3 +297,29 @@ def retorno_pago(request):
         return render(request, 'retorno.html', {'response': response})
     except Exception as e:
         return render(request, 'retorno.html', {'error': str(e)})
+
+
+def buscarProducto(request):
+    busqueda = request.GET.get('q', '').strip().lower()
+    #tipo_usuario = request.session.get('tipo_usuario')
+    productos = obtener_productos()
+    if busqueda:
+        #p itera sobre productos si existe la búsqueda, luego "in" implica que mientras haya un mínimo de coincidencia se añada al array
+        productos = [p for p in productos if busqueda in p.get('nombre', '').lower()]
+    contexto = {
+        'datos': productos,
+        'query': busqueda 
+    }
+    return render(request, 'listaProductos.html', contexto)
+
+def verProductosLista(request):
+    productos = obtener_productos()
+    tipo_usuario = request.session.get('tipo_usuario')
+    try:
+        tipo_usuario_int = int(tipo_usuario)
+    except (TypeError, ValueError):
+        tipo_usuario_int = -1
+    contexto = { "datos":productos,
+                 "tipo_usuario": tipo_usuario_int}
+    print(contexto)
+    return render(request, 'listaProductos.html', contexto)

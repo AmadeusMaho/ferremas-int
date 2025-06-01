@@ -147,3 +147,18 @@ body {
   border-color: #a56f79;
   color: white;
 }
+
+.search-input {
+      max-width: 200px; /* Limit search bar width */
+}
+.search-input input {
+      border-radius: 0.25rem 0 0 0.25rem; /* Rounded left corners */
+}
+.search-input button {
+      background: none;
+      border: 1px solid #ced4da;
+      border-left: none;
+      border-radius: 0 0.25rem 0.25rem 0; /* Rounded right corners */
+      padding: 0 10px;
+      color: #FFCCD5; /* Match your color scheme */
+}

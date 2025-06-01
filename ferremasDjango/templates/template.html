@@ -24,13 +24,17 @@
                         <a class="nav-link" href="{% url 'index' %}">Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Productos</a>
+                        <a class="nav-link" href="{% url 'verProductosLista' %}">Productos</a>
                     </li>
                 </ul>
+                <form method="GET" action="{% url 'buscarProducto' %}">
                 <div class="search-input d-flex align-items-center me-3">
-                    <input type="text" style="color: #FFCCD5" placeholder="Buscar productos..." class="form-control">
-                    <i class="fa fa-search ms-2"></i>
+                    <input type="text" name="q" style="color: #FFCCD5" placeholder="Buscar productos..." class="form-control" value="{{ busqueda|default:'' }}">
+                     <button type="submit" class="search-input" aria-label="Buscar">
+                        <i class="fa fa-search"></i>
+                    </button>
                 </div>
+                  </form>
                 <ul class="navbar-nav">
                   {% if tipo_usuario >= 0 %}
                       <a class="nav-link" href="/usuario/"><i class="fa fa-user"></i> Perfil</a>
