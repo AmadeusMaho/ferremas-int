@@ -80,9 +80,7 @@ def login_spring_boot(usuario, clave):
 def get_data(request):
     token = request.session.get('jwt_token')
     headers = {'Authorization': f'Bearer {token}'}
-
     response = requests.get('http://localhost:8088/api/protected', headers=headers)
-
     if response.status_code == 200:
         return JsonResponse(response.json())
     else:
