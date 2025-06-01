@@ -249,6 +249,7 @@ def verRegistro(request):
     return render(request, 'registro.html')
 
 def logout(request):
+
     request.session.flush()
     return redirect('login')
 
@@ -286,3 +287,42 @@ def retorno_pago(request):
         return render(request, 'retorno.html', {'response': response})
     except Exception as e:
         return render(request, 'retorno.html', {'error': str(e)})
+    
+def verVentas(request):
+    urlVenta = "http://localhost:8088/api/venta"
+
+    try:
+        responseVentas = requests.get(urlVenta)
+        responseVentas.raise_for_status()
+        ventas = responseVentas.json()
+
+        for venta in ventas:
+            cliente = venta.get('cliente', {})
+            venta['nombreCliente'] = cliente.get('nombre', '') + ' ' + cliente.get('apellido', '')
+            venta['clienteId'] = cliente.get('clienteId', None)
+
+            venta_total = 0
+            for detalle in venta.get('detallesVentas', []):
+                venta_total += detalle['precioUnit'] * detalle['cantidad']
+            venta['total'] = venta_total
+
+    except Exception as e:
+        print(f"Error: {e}")
+        return render(request, 'listaventas.html', {'ventas': [], 'error': str(e)})
+
+    return render(request, 'listaventas.html', {'ventas': ventas})
+
+def verDetalleId(request, id):
+    urlDetalle = f"http://localhost:8088/api/venta/{id}/detalle"
+
+    try:
+        responseDetalle = requests.get(urlDetalle)
+        responseDetalle.raise_for_status()
+        detalle = responseDetalle.json()  # <-- JSON es una lista
+
+    except Exception as e:
+        print(f"Error: {e}")
+        return render(request, 'listadetalle.html', {'detalle': [], 'error': str(e)})
+
+    return render(request, 'listadetalle.html', {'detalle': detalle})
+

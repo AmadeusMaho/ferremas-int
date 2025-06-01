@@ -1,5 +1,6 @@
 package com.almacen.ferremas.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -17,6 +18,8 @@ public class Producto {
     private float precio;
     private String imagen;
     private int stock;
+
+
 
     @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DetalleVenta> detalles_ventas;

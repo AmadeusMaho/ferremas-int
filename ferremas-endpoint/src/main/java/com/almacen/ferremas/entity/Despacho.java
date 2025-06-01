@@ -1,5 +1,6 @@
 package com.almacen.ferremas.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,13 +22,15 @@ public class Despacho {
     private Date fechaRecibido;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name="direccion_id", nullable = false)
-    @JsonIgnoreProperties("direccion")
+    //@JsonIgnoreProperties("direccion")
     private Direccion direccion;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name="venta_id", nullable = false)
-    @JsonIgnoreProperties("venta")
+    //@JsonIgnoreProperties("venta")
     private Venta venta;
 
     public Despacho() {
