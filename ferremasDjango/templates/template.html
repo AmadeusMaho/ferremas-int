@@ -20,12 +20,27 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
+                    <li class="nav-item">           
                         <a class="nav-link" href="{% url 'index' %}">Inicio</a>
-                    </li>
+                    </li>                                               
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'verProductosLista' %}">Productos</a>
+                        <a class="nav-link" href="{% url 'verProductosLista' %}">Productos</a> <!-- Por defecto tipo_usuario 2 = Cliente -->
                     </li>
+                    {%if tipo_usuario == 1%} <!-- tipo_usuario 1 = Admin -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'verUsuarios' %}">Administración</a>
+                    </li>
+                    {%endif%}
+                    {%if tipo_usuario == 3%} <!-- tipo_usuario 3 = Bodeguero -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'verProductosLista' %}">Modificar productos</a>
+                    </li>
+                    {%endif%}
+                       {%if tipo_usuario == 4%} <!-- tipo_usuario 4 = Contador -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'listaventas' %}">Ventas</a>
+                    </li>
+                    {%endif%}
                 </ul>
                 <form method="GET" action="{% url 'buscarProducto' %}">
                 <div class="search-input d-flex align-items-center me-3">

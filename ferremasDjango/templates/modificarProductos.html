@@ -1,0 +1,26 @@
+{% extends "template.html" %}
+{% load static %}
+{% block titulo %}Ferremas - productos{% endblock %}
+{% block content %}
+
+   <div class="container mt-5 pt-5">
+        <h1 class="text-center mb-4" style="color: #FFCCD5;">Productos disponibles</h1>
+        <div class="row">
+            {% for producto in datos %}
+                <div class="col-md-4 mb-4">
+                    <div class="card product-card">
+                       <a href="{% url 'producto' producto.productoId %}"><img src="{{ producto.imagen }}" class="card-img-top" alt="{{ producto.nombre }}"></a> 
+                        <div class="card-body text-center">
+                            <h5 class="card-title">{{ producto.nombre }}</h5>
+                            <p class="card-text">${{ producto.precio|floatformat:2 }}</p>
+                            <a href="{% url 'producto' producto.productoId %}" class="btn btn-cart"><i class="fa fa-cart-plus"></i>Ver producto</a>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="col-12 text-center">
+                    <p style="color: #e28596f3;"">No hay resultados para su búsqueda.</p>
+                </div>
+            {% endfor %}
+        </div>
+{% endblock %}

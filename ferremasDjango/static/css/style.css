@@ -211,7 +211,7 @@ body {
 }
 .search-input button {
       background: none;
-      border: 1px solid #ced4da;
+      border: none;
       border-left: none;
       border-radius: 0 0.25rem 0.25rem 0; /* Rounded right corners */
       padding: 0 10px;

@@ -1,0 +1,44 @@
+{% extends "template.html" %}
+{% load static %}
+{% block titulo %}Ferremas - Administración{% endblock %}
+{% block content %}
+<div class="container mt-5 pt-5">
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Clientes de la tienda</h5>
+      {% if usuarios %}
+        <div class="table-responsive table-dark">
+          <table class="table table-bordered table-striped mt-3">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>run</th>
+                <th>dv</th>
+                <th>email</th>
+                <th>telefono</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for user in usuarios %}
+              <tr>
+                <td>{{ user.clienteId }}</td>
+                <td>{{ user.nombre }}</td>
+                <td>{{ user.apellido|default:"-" }}</td>
+                <td>{{ user.run|default:"-" }}</td>
+                <td>{{ user.dv|default:"-" }}</td>
+                <td>{{ user.email|default:"-" }}</td>
+                <td>{{ user.telefono|default:"-" }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <p>No hay usuarios registrados.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

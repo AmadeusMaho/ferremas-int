@@ -38,6 +38,7 @@ urlpatterns = [
     path('registro/', views.verRegistro, name='registroUsuario'),
     path('logout/', views.logout, name='logout'),
     path('ventas/', views.verVentas, name='listaventas'),
+    path('usuarios/', views.verUsuarios, name='verUsuarios'),
     path('detalle/<str:id>/', views.verDetalleId, name='listadetalles'),
     path('buscar/', views.buscarProducto, name='buscarProducto'),
     path('productos/', views.verProductosLista, name='verProductosLista')
