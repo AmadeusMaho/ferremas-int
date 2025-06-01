@@ -12,6 +12,7 @@ import random
 def verIndex(request):
     productos = obtener_productos()
     contexto = { "datos":productos}
+    print(contexto)
     return render(request, 'index.html', contexto)
 
 def verLogin(request):
