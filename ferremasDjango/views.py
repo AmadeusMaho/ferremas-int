@@ -521,3 +521,65 @@ def eliminar_direccion(request, direccion_id):
         except Exception as e:
             print(f"Error eliminando dirección {direccion_id}: {e}")
     return redirect('usuario')
+
+
+
+def modificarProductoLista(request):
+    productos = obtener_productos()
+    tipo_usuario = request.session.get('tipo_usuario')
+    try:
+        tipo_usuario_int = int(tipo_usuario)
+    except (TypeError, ValueError):
+        tipo_usuario_int = -1
+    contexto = { "datos":productos,
+                 "tipo_usuario": tipo_usuario_int}
+    print(contexto)
+    return render(request, 'modificarProductos.html', contexto)
+
+
+
+def modificarStock(request):
+    tipo_usuario = request.session.get('tipo_usuario')
+    if request.method == 'POST':
+        product_id = request.POST.get('productId')
+        stock = request.POST.get('stock')
+        url = f"http://localhost:8088/api/producto/{product_id}"
+        product_id = int(product_id)
+        stock = int(stock)
+        try:
+            response = requests.get(url)
+            response.raise_for_status()
+            producto = response.json()
+            datos_actualizados = {
+                'productoId': product_id,
+                'nombre': producto.get('nombre', ''),
+                'descripcion': producto.get('descripcion', ''),
+                'precio': float(producto.get('precio', 0)),
+                'imagen': producto.get('imagen', ''),
+                'stock': stock,
+                'detallesVentas': []
+            }
+            #enviar solicitud
+            response = requests.put(url, json=datos_actualizados)
+            if response.status_code in (200, 201):
+                print("datos modificados")
+                return redirect('modificarProductos')
+            else:
+                return render(request, 'modificarProductos.html', {
+                    'error': f'Error al actualizar: {response.text}',
+                    'datos': obtener_productos(),
+                    'tipo_usuario': tipo_usuario
+                })
+
+        except requests.RequestException as e:
+            return render(request, 'modificarProductos.html', {
+                'error': f'Error de conexión: {str(e)}',
+                'datos': obtener_productos(),
+                'tipo_usuario': tipo_usuario
+            })
+    productos = obtener_productos()
+    contexto = {
+        'datos': productos,
+        'tipo_usuario': tipo_usuario
+    }
+    return render(request, 'modificarProductos.html', contexto)
