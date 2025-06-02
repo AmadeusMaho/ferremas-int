@@ -557,7 +557,7 @@ def modificarStock(request):
                 'precio': float(producto.get('precio', 0)),
                 'imagen': producto.get('imagen', ''),
                 'stock': stock,
-                'detallesVentas': []
+                'detalles_ventas': []
             }
             #enviar solicitud
             response = requests.put(url, json=datos_actualizados)
