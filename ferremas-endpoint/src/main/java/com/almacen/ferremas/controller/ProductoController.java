@@ -48,7 +48,6 @@ public class ProductoController {
         ProductoExistente.setPrecio(ProductoActualizado.getPrecio());
         ProductoExistente.setImagen(ProductoActualizado.getImagen());
         ProductoExistente.setStock(ProductoActualizado.getStock());
-        ProductoExistente.setDetalles_ventas(ProductoActualizado.getDetalles_ventas());
 
         // Guardar el Producto actualizado
         Producto ProductoGuardado = productoRepository.save(ProductoExistente);

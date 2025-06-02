@@ -550,6 +550,7 @@ def modificarStock(request):
             response = requests.get(url)
             response.raise_for_status()
             producto = response.json()
+
             datos_actualizados = {
                 'productoId': product_id,
                 'nombre': producto.get('nombre', ''),
@@ -557,13 +558,12 @@ def modificarStock(request):
                 'precio': float(producto.get('precio', 0)),
                 'imagen': producto.get('imagen', ''),
                 'stock': stock,
-                'detallesVentas': []
             }
             #enviar solicitud
             response = requests.put(url, json=datos_actualizados)
             if response.status_code in (200, 201):
                 print("datos modificados")
-                return redirect('modificarProductos')
+                return redirect('modificarProductoLista')
             else:
                 return render(request, 'modificarProductos.html', {
                     'error': f'Error al actualizar: {response.text}',
