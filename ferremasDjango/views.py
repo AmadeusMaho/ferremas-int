@@ -16,7 +16,7 @@ def verIndex(request):
         tipo_usuario_int = int(tipo_usuario)
     except (TypeError, ValueError):
         tipo_usuario_int = -1
-    contexto = { "datos":productos,
+    contexto = { "datos":productos[:6],
                  "tipo_usuario": tipo_usuario_int}
     print(contexto)
     return render(request, 'index.html', contexto)
