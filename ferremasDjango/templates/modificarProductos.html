@@ -62,7 +62,7 @@ Ferremas - Productos
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form method="POST" action="{% url 'modificarStock'%}">
+        <form method="POST" action="{% url 'modificarStock' %}">
           {% csrf_token %}
           <div class="mb-3">
             <label for="stockInput_{{ producto.productoId }}" class="form-label" style="color: #ccc;">Nuevo Stock</label>

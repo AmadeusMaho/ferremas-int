@@ -1,11 +1,12 @@
 -- Crear esquema
+FLUSH PRIVILEGES;
 DROP DATABASE IF EXISTS ferremas;
 CREATE DATABASE IF NOT EXISTS ferremas;
 DROP USER IF EXISTS 'admin'@'%';
 -- Creamos usuario xxx lo puede reemplazar por un nombre de su usuario
 CREATE USER 'admin'@'%' IDENTIFIED BY '123';
 GRANT ALL PRIVILEGES ON ferremas.* TO 'admin'@'%';
-FLUSH PRIVILEGES;
+
 
 USE ferremas;
 

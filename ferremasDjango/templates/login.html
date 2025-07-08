@@ -18,10 +18,12 @@
                 <input type="password" class="form-control"  name="clave" id="clave" placeholder="Contraseña">
               </div>
               <button type="submit" class="btn btn-primary mx-3 mt-2 mb-2">Ingresar</button>
+              <a href="{% url 'registroUsuario' %}" class="btn btn-secondary">Registrarse</a>
                {% if error %}
                 <p style="color:red;">{{ error }}</p>
                {% endif %}
             </form>
+             
           </div>
         </div>
       
